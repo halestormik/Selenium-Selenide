@@ -40,7 +40,7 @@ public class CardOrderTest {
         form.findElement(By.className("button")).click();
 
         String text = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
-        Assertions.assertEquals("Ваша заявка отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
+        Assertions.assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
         Thread.sleep(5000);
     }
 }
