@@ -9,13 +9,14 @@ import org.openqa.selenium.chrome.ChromeOptions;
 public class CardOrderTest {
     private WebDriver driver;
 
-    @BeforeAll
+  /*  @BeforeAll
     public static void setupAll() {
         WebDriverManager.chromedriver().setup();
-    }
+    }*/
 
     @BeforeEach
-    void setup() {
+     void setup() {
+        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
