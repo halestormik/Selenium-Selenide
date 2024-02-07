@@ -18,17 +18,17 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
     // библиотека com.codeborne:selenide используется при построении проекта с использованием Selenide
-    //testImplementation 'com.codeborne:selenide:6.17.1'
+    testImplementation 'com.codeborne:selenide:6.17.1'
 
     // при реализации проекте с использованием Selenium вместо библиотеки com.codeborne:selenide подключаются
     // org.seleniumhq.selenium:selenium-java и io.github.bonigarcia:webdrivermanager
-     testImplementation 'org.seleniumhq.selenium:selenium-java:4.11.0'
-     testImplementation 'io.github.bonigarcia:webdrivermanager:5.4.1'
+     //testImplementation 'org.seleniumhq.selenium:selenium-java:4.11.0'
+     //testImplementation 'io.github.bonigarcia:webdrivermanager:5.4.1'
 }
 
 test {
     useJUnitPlatform()
     // в тестах, вызывая `gradlew test -Dselenide.headless=true` будем передавать этот параметр в JVM (где его подтянет Selenide)
     // свойство selenide.headless используется в проектах на основе Selenide
-    //systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
 }
