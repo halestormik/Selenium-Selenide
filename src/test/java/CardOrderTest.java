@@ -21,6 +21,7 @@ public class CardOrderTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999/");
     }
 
     @AfterEach
@@ -30,10 +31,9 @@ public class CardOrderTest {
     }
 
     @Test
-    public void ShouldTestFormWithCorrectData() { // проверка корректной работы формы при верных данных
+    public void shouldTestFormWithCorrectData() { // проверка корректной работы формы при верных данных
 
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.id("root"));
+        WebElement form = driver.findElement(By.className("form"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Василий");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79185463782");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
@@ -44,79 +44,75 @@ public class CardOrderTest {
     }
 
     @Test
-    public void ShouldTestFormWithEmptyNameField() { // проверка работы формы при пустом поле ввода имени
+    public void shouldTestFormWithEmptyNameField() { // проверка работы формы при пустом поле ввода имени
 
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.id("root"));
+        WebElement form = driver.findElement(By.className("form"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79185463782");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.className("button")).click();
 
-        String fieldText = driver.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getText(); // текст ошибка
-        String fieldColor = driver.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getCssValue("color"); // цвет текста ошибки
+        boolean b =form.findElement(By.cssSelector("[data-test-id=name].input_invalid")).isDisplayed(); // проверка наличия класса input_invalid
+        Assertions.assertTrue(b);
+        String fieldText = driver.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getText(); // текст ошибки
         Assertions.assertEquals("Поле обязательно для заполнения", fieldText.trim());
-        Assertions.assertEquals("rgba(255, 92, 92, 1)", fieldColor.trim());
     }
 
     @Test
-    public void ShouldTestFormWithIncorrectNameField() { // проверка работы формы при некорректных значениях поля ввода имени
+    public void shouldTestFormWithIncorrectNameField() { // проверка работы формы при некорректных значениях поля ввода имени
 
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.id("root"));
+        WebElement form = driver.findElement(By.className("form"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("22212");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79185463782");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.className("button")).click();
 
+
+        boolean b =form.findElement(By.cssSelector("[data-test-id=name].input_invalid")).isDisplayed(); // проверка наличия класса input_invalid
+        Assertions.assertTrue(b);
         String fieldText = driver.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getText();
-        String fieldColor = driver.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getCssValue("color");
         Assertions.assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", fieldText.trim());
-        Assertions.assertEquals("rgba(255, 92, 92, 1)", fieldColor.trim());
     }
 
     @Test
-    public void ShouldTestFormWithEmptyPhoneField() { // проверка работы формы при пустом поле ввода телефона
+    public void shouldTestFormWithEmptyPhoneField() { // проверка работы формы при пустом поле ввода телефона
 
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.id("root"));
+        WebElement form = driver.findElement(By.className("form"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Василий");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.className("button")).click();
 
+        boolean b =form.findElement(By.cssSelector("[data-test-id=phone].input_invalid")).isDisplayed(); // проверка наличия класса input_invalid
+        Assertions.assertTrue(b);
         String fieldText = driver.findElement(By.cssSelector("[data-test-id=phone] .input__sub")).getText();
-        String fieldColor = driver.findElement(By.cssSelector("[data-test-id=phone] .input__sub")).getCssValue("color");
         Assertions.assertEquals("Поле обязательно для заполнения", fieldText.trim());
-        Assertions.assertEquals("rgba(255, 92, 92, 1)", fieldColor.trim());
     }
 
     @Test
-    public void ShouldTestFormWithIncorrectPhoneField() { // проверка работы формы при некорректных значениях поля ввода телефона
+    public void shouldTestFormWithIncorrectPhoneField() { // проверка работы формы при некорректных значениях поля ввода телефона
 
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.id("root"));
+        WebElement form = driver.findElement(By.className("form"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Василий");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("Петрович");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.className("button")).click();
 
+        boolean b =form.findElement(By.cssSelector("[data-test-id=phone].input_invalid")).isDisplayed(); // проверка наличия класса input_invalid
+        Assertions.assertTrue(b);
         String fieldText = driver.findElement(By.cssSelector("[data-test-id=phone] .input__sub")).getText();
-        String fieldColor = driver.findElement(By.cssSelector("[data-test-id=phone] .input__sub")).getCssValue("color");
         Assertions.assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", fieldText.trim());
-        Assertions.assertEquals("rgba(255, 92, 92, 1)", fieldColor.trim());
     }
 
     @Test
-    public void ShouldTestFormWithoutClickingOnCheckbox() { // проверка работы формы, если не нажат чекбокс
+    public void shouldTestFormWithoutClickingOnCheckbox() { // проверка работы формы, если не нажат чекбокс
 
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.id("root"));
+        WebElement form = driver.findElement(By.className("form"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Василий");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79185463782");
         form.findElement(By.className("button")).click();
 
-        String text = driver.findElement(By.cssSelector("[data-test-id=agreement] .checkbox__text")).getCssValue("color");
-        Assertions.assertEquals("rgba(255, 92, 92, 1)", text.trim());
+        boolean b =form.findElement(By.cssSelector("[data-test-id=agreement].input_invalid")).isDisplayed(); // проверка наличия класса input_invalid
+        Assertions.assertTrue(b);
     }
 }
